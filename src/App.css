@@ -1,0 +1,44 @@
+.App {
+  text-align: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+strong {
+  color: rgb(243, 239, 8);
+  font-size: 18px;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background: rgb(41, 228, 56);
+  background: -webkit-linear-gradient(to right, rgb(42, 212, 50), rgb(185, 207, 173));
+  background: linear-gradient(to right, rgb(167, 206, 172), rgb(76, 214, 41));
+  color: black;
+}
+
+.container {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  width: 70%;
+  /* height: 100%; */
+  box-shadow: 0 8px 6px -6px black;
+  background-color: rgb(35, 197, 202);
+  border-radius: 10px 10px;
+}
+
+.img-responsive {
+  width: 100%;
+  height: 100%;
+}
+
+.introduction {
+  height: 600px !important;
+  background: url('https://cdn.dribbble.com/users/28455/screenshots/1389791/weather.gif') no-repeat center;
+  background-size: cover;
+}
