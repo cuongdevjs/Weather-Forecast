@@ -9,10 +9,16 @@ import { NavLink, Switch, Route } from "react-router-dom";
 import { MyWeather } from "./component/myWeather";
 import { Loading } from "./component/loading";
 import { About } from "./component/about";
+import styled from "styled-components";
 
 
+const Animate = styled.div`
+  color: blue;
+  font-size: 30px;
+  margin-top: 10px;
+`;
 const API_key = '380284a52f078643ef455fdbe7299a3c';
-const TIME_GET_API = 1000;
+const TIME_GET_API = 500;
 
 class App extends Component {
   state = {
@@ -41,7 +47,6 @@ class App extends Component {
         err: data.message,
         city: '',
         country: '',
-        loading: true
       });
     } else if (data.message === undefined) {
       this.setState({
@@ -53,8 +58,7 @@ class App extends Component {
         description: data.weather[0].description,
         city: '',
         country: '',
-        err: '',
-        loading: true
+        err: ''
       });
     }
   }
@@ -65,13 +69,20 @@ class App extends Component {
       navigator.geolocation.getCurrentPosition((position) => {
         let latitude = position.coords.latitude;
         let longitude = position.coords.longitude;
-        this.setState({
-          latitude: latitude,
-          longitude: longitude
-        });
+        setTimeout(() => {
+          this.setState({
+            latitude: latitude,
+            longitude: longitude
+          });
+        }, 2000);
         setTimeout(() => {
           this.getAPIWeather(latitude, longitude);
         }, TIME_GET_API);
+        setTimeout(() => {
+          this.setState({
+            loading: true
+          })
+        }, 2000);
       });
     }
     
@@ -85,13 +96,12 @@ class App extends Component {
       .then(result => { const data = result.json(); return data; })
       .then(data => { return data; })
       .catch(err => console.log(err));
-    setTimeout(() => {
+    await setTimeout(() => {
       if (data.message !== undefined) {
         this.setState({
           err: data.message,
           city: '',
           country: '',
-          loading: true
         });
       } else if (data.message === undefined) {
         this.setState({
@@ -104,11 +114,15 @@ class App extends Component {
           city: '',
           country: '',
           err: '',
-          loading: true
         });
       }
       console.log(this.state.err);
     }, TIME_GET_API);
+    await setTimeout(() => {
+      this.setState({
+        loading: true
+      })
+    }, 4000);
   }
   inputCity = (event) => {
     console.log('input City');
@@ -168,24 +182,35 @@ class App extends Component {
                 <Route exact path="/" render={() => (<Home />)} />
                 <Route path="/manual" render={() => (
                   <div>
-                    <Form inputCity={this.inputCity}
+                    <Form
+                      inputCity={this.inputCity}
                       inputCountry={this.inputCountry}
                       onSubmit={this.getAPI}
                     />
                     {
-                      (this.state.loading !== false) ?
+                      (this.state.condition !== '') ?
                       (
-                        <Result
-                          city={this.state.outCity}
-                          country={this.state.outCountry}
-                          temperature={this.state.temperature}
-                          humidity={this.state.humidity}
-                          condition={this.state.condition}
-                          description={this.state.description}
-                          err={this.state.err}
-                        />
-                      ) :
-                      (<Loading/>)
+                        (this.state.loading===false)?(< Loading />):
+                          (
+                            <Result
+                              city={this.state.outCity}
+                              country={this.state.outCountry}
+                              temperature={this.state.temperature}
+                              humidity={this.state.humidity}
+                              condition={this.state.condition}
+                              description={this.state.description}
+                              err={this.state.err}
+                            />
+                          )
+                        ) :
+                        (
+                          <div>
+                            <Animate>
+                              <i class="fas fa-hand-pointer"></i>
+                            </Animate>
+                            <h3>Input above</h3>
+                          </div>
+                        )
                     }
                   </div>
                 )}/>
@@ -195,22 +220,25 @@ class App extends Component {
                     {
                       (this.state.latitude !== '') ? (
                         <img src={`https://maps.googleapis.com/maps/api/staticmap?center=${this.state.latitude},${this.state.longitude}&zoom=14&size=500x100&sensor=false&key=AIzaSyBzxcdgnG0FNgcEfhVCsOb8fRR4t7llqpk`} alt="ok" />
-                      ): (<h2>Click Above</h2>)
+                      ): (<Loading/>)
                     }
                     {
                       (this.state.condition !== '') ?
                         (
-                          <Result
-                            city={this.state.outCity}
-                            country={this.state.outCountry}
-                            temperature={this.state.temperature}
-                            humidity={this.state.humidity}
-                            condition={this.state.condition}
-                            description={this.state.description}
-                            err={this.state.err}
-                          />
+                          (this.state.loading===false)?(< Loading />):
+                          (
+                            <Result
+                              city={this.state.outCity}
+                              country={this.state.outCountry}
+                              temperature={this.state.temperature}
+                              humidity={this.state.humidity}
+                              condition={this.state.condition}
+                              description={this.state.description}
+                              err={this.state.err}
+                            />
+                          )
                         ) :
-                        ((this.state.loading===false)?(""):(< Loading />))
+                        (<h3>Click Above</h3>)
                     }
                   </div>
                 )} />

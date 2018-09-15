@@ -9,7 +9,6 @@ export const Title = () => {
   return (
     <Header>
       <h2 >The Weather Forecast</h2>
-      
     </Header>
   )
 }
