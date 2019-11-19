@@ -7,10 +7,10 @@
     "google-maps-react": "^2.0.2",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.5",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0",
     "style-component": "0.0.1",
-    "styled-components": "^3.4.6"
+    "styled-components": "^4.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
